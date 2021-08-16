@@ -1,0 +1,44 @@
+<form class="example-container" [formGroup]="form" #frmSignos="ngForm" (ngSubmit)="operar()">
+
+    <div [hidden]="true">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="ID" required formControlName="id">
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="!edicion">
+        <div class="example-container">
+            <mat-form-field>
+                <mat-select placeholder="Selecciona paciente" [(value)]="idPacienteSeleccionado">
+                    <mat-option *ngFor="let p of (pacientes$ | async)" [value]="p.idPaciente">
+                        {{p.nombres}} {{p.apellidos}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div *ngIf="edicion">
+        <h2>Paciente {{pacienteEdicion.nombres}} {{pacienteEdicion.apellidos}}</h2>
+    </div>
+
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Temperatura" required formControlName="temperatura">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Pulso" required formControlName="pulso">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Ritmo Cardiaco" required formControlName="ritmoCardiaco">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="frmSignos.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" routerLink='/pages/signos' type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+    </button>
+</form>

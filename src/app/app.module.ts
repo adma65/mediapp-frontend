@@ -3,16 +3,64 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './pages/login/login.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { JwtModule } from "@auth0/angular-jwt";
+import { environment } from 'src/environments/environment';
+import { ServerErrorsInterceptor } from './shared/server-errors.interceptor';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
+export function tokenGetter() {
+  return sessionStorage.getItem(environment.TOKEN_NAME);
+}
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,    
+    MatMenuModule,
+    MatIconModule,
+    MatDividerModule,
+    MatToolbarModule,
+    MatFormFieldModule,  
+    MatCardModule,
+    MatSnackBarModule, 
+    HttpClientModule, 
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.HOST.substring(7)],
+        disallowedRoutes: [`http://${environment.HOST.substring(7)}/login/enviarCorreo`,
+          `http://${environment.HOST.substring(7)}/oauth/token`]
+      },
+    }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorsInterceptor,
+      multi: true
+    },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
