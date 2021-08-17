@@ -22,15 +22,15 @@
     </div>
 
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Temperatura" required formControlName="temperatura">
+        <input matInput placeholder="Temperatura" maxlength="10" required formControlName="temperatura">
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Pulso" required formControlName="pulso">
+        <input matInput placeholder="Pulso" maxlength="10" required formControlName="pulso">
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Ritmo Cardiaco" required formControlName="ritmoCardiaco">
+        <input matInput placeholder="Ritmo Cardiaco" maxlength="10" required formControlName="ritmoCardiaco">
     </mat-form-field>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="frmSignos.invalid">
